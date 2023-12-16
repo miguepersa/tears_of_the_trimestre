@@ -8,6 +8,7 @@ palancas_duplicadas(Palancas) :-
 
 % Definición de la relación cruzar/3
 cruzar(Mapa, Palancas, Seguro) :-
+    nonvar(Mapa),
     cruzar_aux(Mapa, Palancas_2, Seguro),
     limpiar(Palancas_2, Palancas),
     not(palancas_duplicadas(Palancas)).
@@ -66,6 +67,8 @@ siempre_seguro(Mapa) :- \+ (cruzar(Mapa, _, trampa)).
 leer(Mapa) :-
 	write( user_output, "Ingrese el nombre del archivo: " ), flush_output( user_output ),
 	read_string( user_input, "\n", " ", _End, Filename),
-	open(Filename,read,File), 
-	read(File,Mapa),
-	close(File).
+    atom_string(AtomFn, Filename),
+	seeing(OldStream),
+    see(AtomFn),
+    read(Mapa),
+    seen, see(OldStream).
